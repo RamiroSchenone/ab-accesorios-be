@@ -28,7 +28,7 @@ namespace ab_accesorios_be.Services
             return dtos;
         }
 
-        public async Task<ProductoDto> Get(int id)
+        public async Task<ProductoDto> Get(long id)
         {
             var producto = await _context.Productos
                 .Include(x => x.Medidas)
@@ -53,61 +53,39 @@ namespace ab_accesorios_be.Services
             return dto;
         }
 
-        //public async Task<ProductoDto> Put(ProductoInput productoInput)
-        //{
+        public async Task<ProductoDto> Put(ProductoInput productoInput)
+        {
+            Producto entity = await _context.Productos.FindAsync(productoInput.Id);
 
-        //    Producto entity = await _context.Productos.FindAsync(productoInput.Id);
+            if (entity != null)
+            {
+                entity.Nombre = productoInput.Nombre;
+                entity.Descripcion = productoInput.Descripcion;
+                entity.Disponible = productoInput.Disponible;
+                entity.ImageURL = productoInput.ImageURL;
+                entity.MarcaId = productoInput.MarcaId;
+                entity.Precio = productoInput.Precio;
 
-        //    if (entity == null)
-        //    {
-        //        return null; // O manejar el error de entidad no encontrada
-        //    }
+                foreach (var medidaToUpdate in entity.Medidas)
+                {
+                    foreach (var medidaInput in productoInput.Medidas)
+                    {
+                        if (medidaToUpdate.ProductoId == medidaInput.ProductoId)
+                        {
+                            medidaToUpdate.Ancho = medidaInput.Ancho;
+                            medidaToUpdate.Alto = medidaInput.Alto;
+                            medidaToUpdate.Profudidad = medidaInput.Profudidad;
+                        }
+                    }
+                }
 
-        //    // Actualizar solo las propiedades que se proporcionan en el objeto de entrada
-        //    if (productoInput.Nombre != null)
-        //    {
-        //        entity.Nombre = productoInput.Nombre;
-        //    }
-        //    if (productoInput.Descripcion != null)
-        //    {
-        //        entity.Descripcion = productoInput.Descripcion;
-        //    }
-        //    if (productoInput.Disponible != default)
-        //    {
-        //        entity.Disponible = productoInput.Disponible;
-        //    }
-        //    if (productoInput.ImageURL != null)
-        //    {
-        //        entity.ImageURL = productoInput.ImageURL;
-        //    }
-        //    if (productoInput.MarcaId != default)
-        //    {
-        //        entity.MarcaId = productoInput.MarcaId;
-        //    }
-        //    if (productoInput.Precio != default)
-        //    {
-        //        entity.Precio = productoInput.Precio;
-        //    }
-        //    if (productoInput.Medidas != null && productoInput.Medidas.Any())
-        //    {
-        //        // Borrar las medidas existentes y agregar las nuevas
-        //        entity.Medidas.Clear();
-        //        foreach (var medidaDto in productoInput.Medidas)
-        //        {
-        //            var medida = _mapper.Map<MedidaDto, Medida>(medidaDto);
-        //            entity.Medidas.Add(medida);
-        //        }
-        //    }
+                _context.Entry(entity).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
 
-        //    // Guardar los cambios en la base de datos
-        //    _context.Update(entity);
-        //    await _context.SaveChangesAsync();
-
-        //    // Mapear la entidad actualizada a un objeto DTO
-        //    var dto = _mapper.Map<Producto, ProductoDto>(entity);
-
-        //    //return dto;
-        //}
+            var dto = _mapper.Map<Producto, ProductoDto>(entity);
+            return dto;
+        }
 
         public async Task<bool> Delete(long id)
         {

@@ -1,9 +1,6 @@
-﻿using ab_accesorios_be.Infraestructure.Models.Dto;
-using ab_accesorios_be.Infraestructure.Models.Inputs;
+﻿using ab_accesorios_be.Infraestructure.Models.Inputs;
 using ab_accesorios_be.Services;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ab_accesorios_be.Controllers
 {
@@ -18,7 +15,6 @@ namespace ab_accesorios_be.Controllers
             this.appService = appService;
         }
 
-        // GET: api/<ProductoController>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -33,9 +29,8 @@ namespace ab_accesorios_be.Controllers
             }
         }
 
-        // GET api/<ProductoController>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(long id)
         {
             try
             {
@@ -52,7 +47,6 @@ namespace ab_accesorios_be.Controllers
             }
         }
 
-        // POST api/<ProductoController>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ProductoInput productoInput)
         {
@@ -67,27 +61,32 @@ namespace ab_accesorios_be.Controllers
             }
         }
 
-        // PUT api/<ProductoController>/5
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Put(long id, [FromBody] ProductoInput producto)
-        //{
-        //    try
-        //    {
-        //        if (id != producto.Id)
-        //        {
-        //            return BadRequest();
-        //        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(long id, [FromBody] ProductoInput productoInput)
+        {
+            try
+            {
+                if (id != productoInput.Id)
+                {
+                    return BadRequest();
+                }
 
-        //        var productoUpdated = await this.appService.Put(producto);
-        //        return Ok(productoUpdated);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+                var productoToUpdate = this.appService.Get(id).Result;
 
-        // DELETE api/<ProductoController>/5
+                if (productoToUpdate == null)
+                {
+                    return NotFound();
+                }
+
+                var productoUpdated = await this.appService.Put(productoInput);
+                return Ok(productoUpdated);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
