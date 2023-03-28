@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "e3fvy7mYcRmwLhW9ALzSBBUOXU757QJWRPg/RoRPMhetoQPi/Yf+ebsviRgbe8Wc2Vaatawc8P7PNGcpiN3uVA==",
+  "dgSpecHash": "4LQc57FqLQrZPJLZdnDHI0aETrGdb9Tfuf7bSqNhkGmCXfIZfgn6e2K/b09eS7s7rchNPgemyzxtwGcGb4zMmQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\ramic\\Desktop\\ab-accesorios\\ab-accesorios-be\\ab-accesorios-be.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\ramic\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
+    "C:\\Users\\ramic\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
     "C:\\Users\\ramic\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\ramic\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\ramic\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.4\\microsoft.entityframeworkcore.7.0.4.nupkg.sha512",
     "C:\\Users\\ramic\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.4\\microsoft.entityframeworkcore.abstractions.7.0.4.nupkg.sha512",
     "C:\\Users\\ramic\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.4\\microsoft.entityframeworkcore.analyzers.7.0.4.nupkg.sha512",

@@ -22,7 +22,9 @@ builder.Services.AddControllersWithViews().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
 
-builder.Services.AddScoped<ProductoService>();
+builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Services.AddScoped<ProductoAppService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

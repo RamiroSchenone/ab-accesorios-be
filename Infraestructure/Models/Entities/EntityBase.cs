@@ -1,4 +1,4 @@
-﻿namespace ab_accesorios_be.Infraestructure.Models
+﻿namespace ab_accesorios_be.Infraestructure.Models.Entities
 {
     public class EntityBase
     {
