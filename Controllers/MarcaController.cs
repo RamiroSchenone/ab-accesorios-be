@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿using ab_accesorios_be.Infraestructure.Models.Dto;
+using ab_accesorios_be.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ab_accesorios_be.Controllers
 {
@@ -8,36 +8,101 @@ namespace ab_accesorios_be.Controllers
     [ApiController]
     public class MarcaController : ControllerBase
     {
-        // GET: api/<MarcaController>
+        protected readonly MarcaAppService appService;
+
+        public MarcaController(MarcaAppService appService)
+        {
+            this.appService = appService;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                var dtos = await this.appService.Get();
+                return Ok(dtos);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // GET api/<MarcaController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(long id)
         {
-            return "value";
+            try
+            {
+                var Marca = await this.appService.Get(id);
+                if (Marca == null)
+                {
+                    return NotFound();
+                }
+                return Ok(Marca);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // POST api/<MarcaController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] MarcaDto MarcaInput)
         {
+            try
+            {
+                var MarcaUpdated = await this.appService.Post(MarcaInput);
+                return Ok(MarcaUpdated);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // PUT api/<MarcaController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(long id, [FromBody] MarcaDto MarcaInput)
         {
+            try
+            {
+                if (id != MarcaInput.Id)
+                {
+                    return BadRequest();
+                }
+
+                var MarcaToUpdate = this.appService.Get(id).Result;
+
+                if (MarcaToUpdate == null)
+                {
+                    return NotFound();
+                }
+
+                var MarcaUpdated = await this.appService.Put(MarcaInput);
+                return Ok(MarcaUpdated);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // DELETE api/<MarcaController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(long id)
         {
+            try
+            {
+                var deleted = await appService.Delete(id);
+
+                if (deleted)
+                    return Ok(new { message = "Marca eliminada con éxito." });
+
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using ab_accesorios_be.Infraestructure.Models.Inputs;
+﻿using ab_accesorios_be.Infraestructure.Models.Dto;
 using ab_accesorios_be.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,11 +6,11 @@ namespace ab_accesorios_be.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductoController : ControllerBase
+    public class MenuItemController : ControllerBase
     {
-        protected readonly ProductoAppService appService;
+        protected readonly MenuAppService appService;
 
-        public ProductoController(ProductoAppService appService)
+        public MenuItemController(MenuAppService appService)
         {
             this.appService = appService;
         }
@@ -34,12 +34,12 @@ namespace ab_accesorios_be.Controllers
         {
             try
             {
-                var producto = await this.appService.Get(id);
-                if (producto == null)
+                var MenuItem = await this.appService.Get(id);
+                if (MenuItem == null)
                 {
                     return NotFound();
                 }
-                return Ok(producto);
+                return Ok(MenuItem);
             }
             catch (Exception ex)
             {
@@ -48,12 +48,12 @@ namespace ab_accesorios_be.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ProductoInput productoInput)
+        public async Task<IActionResult> Post([FromBody] MenuItemDto MenuItemInput)
         {
             try
             {
-                var productoUpdated = await this.appService.Post(productoInput);
-                return Ok(productoUpdated);
+                var MenuItemUpdated = await this.appService.Post(MenuItemInput);
+                return Ok(MenuItemUpdated);
             }
             catch (Exception ex)
             {
@@ -62,24 +62,24 @@ namespace ab_accesorios_be.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(long id, [FromBody] ProductoInput productoInput)
+        public async Task<IActionResult> Put(long id, [FromBody] MenuItemDto MenuItemInput)
         {
             try
             {
-                if (id != productoInput.Id)
+                if (id != MenuItemInput.Id)
                 {
                     return BadRequest();
                 }
 
-                var productoToUpdate = this.appService.Get(id).Result;
+                var MenuItemToUpdate = this.appService.Get(id).Result;
 
-                if (productoToUpdate == null)
+                if (MenuItemToUpdate == null)
                 {
                     return NotFound();
                 }
 
-                var productoUpdated = await this.appService.Put(productoInput);
-                return Ok(productoUpdated);
+                var MenuItemUpdated = await this.appService.Put(MenuItemInput);
+                return Ok(MenuItemUpdated);
             }
             catch (Exception ex)
             {
@@ -95,9 +95,9 @@ namespace ab_accesorios_be.Controllers
                 var deleted = await appService.Delete(id);
 
                 if (deleted)
-                    return Ok(new { message = "Producto eliminado con éxito." });
+                    return Ok(new { message = "MenuItem eliminado con éxito." });
 
-                return BadRequest(new { error = "Se produjo un error al intentar eliminar el registro, compruebe el Id." });
+                return BadRequest();
             }
             catch (Exception ex)
             {

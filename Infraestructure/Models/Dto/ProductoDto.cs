@@ -8,14 +8,12 @@ namespace ab_accesorios_be.Infraestructure.Models.Dto
         public string Descripcion { get; set; }
         public bool Disponible { get; set; }
         public string ImageURL { get; set; }
-        public long MarcaId { get; set; }
-        public virtual Marca? Marca { get; set; }
         public float Precio { get; set; }
-        public ICollection<MedidaDto> Medidas { get; }
+        public long MarcaId { get; set; }
 
-        public ProductoDto()
-        {
-            Medidas = new List<MedidaDto>();
-        }
+        public virtual MedidaDto? Medidas { get; set; }
+        public virtual MarcaDto? Marca { get; set; }
+
+        public DateTime FechaCreacion { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using ab_accesorios_be.Infraestructure.Models.Entities;
 using ab_accesorios_be.Infraestructure.Models.Inputs;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace ab_accesorios_be.Services
 {
@@ -19,13 +20,26 @@ namespace ab_accesorios_be.Services
 
         public async Task<List<ProductoDto>> Get()
         {
-            var productosList = await _context.Productos
-                .Include(x => x.Medidas)
-                .Include(x => x.Marca).ToListAsync();
+            try
+            {
+                var productosList = await _context.Productos
+                                .Include(x => x.Medidas)
+                                .Include(x => x.Marca).ToListAsync();
 
-            var dtos = _mapper.Map<List<Producto>, List<ProductoDto>>(productosList);
+                var dtos = _mapper.Map<List<Producto>, List<ProductoDto>>(productosList);
 
-            return dtos;
+                return dtos;
+            }
+            catch (DbUpdateException ex)
+            {
+
+                var sb = new StringBuilder();
+                sb.AppendLine($"Message: {ex.Message}");
+                sb.AppendLine($"InnerException: {ex.InnerException.Message}");
+                sb.AppendLine($"StackTrace: {ex.StackTrace}");
+
+                throw new Exception(sb.ToString());
+            }
         }
 
         public async Task<ProductoDto> Get(long id)
@@ -43,57 +57,95 @@ namespace ab_accesorios_be.Services
 
         public async Task<ProductoDto> Post(ProductoInput productoInput)
         {
-            var entity = _mapper.Map<ProductoInput, Producto>(productoInput);
+            try
+            {
+                Producto entity = _mapper.Map<ProductoInput, Producto>(productoInput);
+                entity.FechaCreacion = DateTime.Now;
 
-            _context.Add(entity);
-            await _context.SaveChangesAsync();
+                _context.Productos.Add(entity);
+                await _context.SaveChangesAsync();
 
-            var dto = _mapper.Map<Producto, ProductoDto>(entity);
+                var dto = _mapper.Map<Producto, ProductoDto>(entity);
 
-            return dto;
+                return dto;
+            }
+            catch (DbUpdateException ex)
+            {
+                var sb = new StringBuilder();
+                sb.AppendLine($"Message: {ex.Message}");
+                sb.AppendLine($"InnerException: {ex.InnerException.Message}");
+                sb.AppendLine($"StackTrace: {ex.StackTrace}");
+
+                throw new Exception(sb.ToString());
+            }
         }
 
         public async Task<ProductoDto> Put(ProductoInput productoInput)
         {
-            Producto entity = await _context.Productos.FindAsync(productoInput.Id);
-
-            if (entity != null)
+            try
             {
-                entity.Nombre = productoInput.Nombre;
-                entity.Descripcion = productoInput.Descripcion;
-                entity.Disponible = productoInput.Disponible;
-                entity.ImageURL = productoInput.ImageURL;
-                entity.MarcaId = productoInput.MarcaId;
-                entity.Precio = productoInput.Precio;
+                Producto? entity = await _context.Productos
+                                .Include(x => x.Medidas)
+                                .Where(x => x.Id == productoInput.Id)
+                                .FirstOrDefaultAsync();
 
-                foreach (var medidaToUpdate in entity.Medidas)
+                if (entity != null)
                 {
-                    foreach (var medidaInput in productoInput.Medidas)
-                    {
-                        if (medidaToUpdate.ProductoId == medidaInput.ProductoId)
-                        {
-                            medidaToUpdate.Ancho = medidaInput.Ancho;
-                            medidaToUpdate.Alto = medidaInput.Alto;
-                            medidaToUpdate.Profudidad = medidaInput.Profudidad;
-                        }
-                    }
+                    entity.Nombre = productoInput.Nombre;
+                    entity.Descripcion = productoInput.Descripcion;
+                    entity.Disponible = productoInput.Disponible;
+                    entity.ImageURL = productoInput.ImageURL;
+                    entity.MarcaId = productoInput.MarcaId;
+                    entity.Precio = productoInput.Precio;
+
+                    entity.Medidas.Ancho = productoInput.Medidas.Ancho;
+                    entity.Medidas.Alto = productoInput.Medidas.Alto;
+                    entity.Medidas.Profudidad = productoInput.Medidas.Profudidad;
+
+                    _context.Entry(entity).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
                 }
 
-                _context.Entry(entity).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                var dto = _mapper.Map<Producto, ProductoDto>(entity);
+                return dto;
             }
+            catch (DbUpdateException ex)
+            {
 
-            var dto = _mapper.Map<Producto, ProductoDto>(entity);
-            return dto;
+                var sb = new StringBuilder();
+                sb.AppendLine($"Message: {ex.Message}");
+                sb.AppendLine($"InnerException: {ex.InnerException.Message}");
+                sb.AppendLine($"StackTrace: {ex.StackTrace}");
+
+                throw new Exception(sb.ToString());
+            }
         }
 
         public async Task<bool> Delete(long id)
         {
-            var producto = _context.Productos.Where(x => x.Id == id).FirstOrDefault();
-            _context.Productos.Remove(producto);
-            await _context.SaveChangesAsync();
+            try
+            {
+                var producto = _context.Productos.Where(x => x.Id == id).FirstOrDefault();
 
-            return true;
+                if (producto != null)
+                {
+                    _context.Productos.Remove(producto);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+
+                return false;
+            }
+            catch (DbUpdateException ex)
+            {
+
+                var sb = new StringBuilder();
+                sb.AppendLine($"Message: {ex.Message}");
+                sb.AppendLine($"InnerException: {ex.InnerException.Message}");
+                sb.AppendLine($"StackTrace: {ex.StackTrace}");
+
+                throw new Exception(sb.ToString());
+            }
         }
     }
 }

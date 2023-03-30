@@ -1,6 +1,7 @@
 using ab_accesorios_be.Infraestructure.Data;
 using ab_accesorios_be.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,18 @@ builder.Services.AddControllersWithViews().AddJsonOptions(options =>
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddScoped<ProductoAppService>();
+builder.Services.AddScoped<MarcaAppService>();
+builder.Services.AddScoped<MenuAppService>();
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -11,8 +11,10 @@ namespace ab_accesorios_be.Infraestructure.Models
         {
             CreateMap<Producto, ProductoDto>().ReverseMap();
             CreateMap<ProductoInput, Producto>().ReverseMap();
+            CreateMap<MedidaInput, Medida>().ReverseMap();
             CreateMap<Medida, MedidaDto>().ReverseMap();
             CreateMap<Marca, MarcaDto>().ReverseMap();
+            CreateMap<MenuItem, MenuItemDto>().ReverseMap();
         }
     }
 }

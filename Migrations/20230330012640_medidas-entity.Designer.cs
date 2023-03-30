@@ -11,8 +11,8 @@ using ab_accesorios_be.Infraestructure.Data;
 namespace ab_accesorios_be.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230327034416_v1.0.0")]
-    partial class v100
+    [Migration("20230330012640_medidas-entity")]
+    partial class medidasentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace ab_accesorios_be.Migrations
                 .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Marca", b =>
+            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Marca", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,7 +37,7 @@ namespace ab_accesorios_be.Migrations
                     b.ToTable("Marcas");
                 });
 
-            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Medida", b =>
+            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Medida", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,12 +57,40 @@ namespace ab_accesorios_be.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductoId");
+                    b.HasIndex("ProductoId")
+                        .IsUnique();
 
                     b.ToTable("Medidas");
                 });
 
-            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Producto", b =>
+            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.MenuItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("RedirectTo")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Menus");
+                });
+
+            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Producto", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,18 +127,20 @@ namespace ab_accesorios_be.Migrations
                     b.ToTable("Productos");
                 });
 
-            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Medida", b =>
+            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Medida", b =>
                 {
-                    b.HasOne("ab_accesorios_be.Infraestructure.Models.Producto", null)
-                        .WithMany("Medidas")
-                        .HasForeignKey("ProductoId")
+                    b.HasOne("ab_accesorios_be.Infraestructure.Models.Entities.Producto", "Producto")
+                        .WithOne("Medidas")
+                        .HasForeignKey("ab_accesorios_be.Infraestructure.Models.Entities.Medida", "ProductoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Producto");
                 });
 
-            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Producto", b =>
+            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Producto", b =>
                 {
-                    b.HasOne("ab_accesorios_be.Infraestructure.Models.Marca", "Marca")
+                    b.HasOne("ab_accesorios_be.Infraestructure.Models.Entities.Marca", "Marca")
                         .WithMany()
                         .HasForeignKey("MarcaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -119,7 +149,7 @@ namespace ab_accesorios_be.Migrations
                     b.Navigation("Marca");
                 });
 
-            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Producto", b =>
+            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Producto", b =>
                 {
                     b.Navigation("Medidas");
                 });

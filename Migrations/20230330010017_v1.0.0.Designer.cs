@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ab_accesorios_be.Infraestructure.Data;
 
@@ -10,9 +11,11 @@ using ab_accesorios_be.Infraestructure.Data;
 namespace ab_accesorios_be.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230330010017_v1.0.0")]
+    partial class v100
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,9 +56,6 @@ namespace ab_accesorios_be.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductoId")
-                        .IsUnique();
 
                     b.ToTable("Medidas");
                 });
@@ -110,6 +110,9 @@ namespace ab_accesorios_be.Migrations
                     b.Property<long>("MarcaId")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("MedidaId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -121,18 +124,10 @@ namespace ab_accesorios_be.Migrations
 
                     b.HasIndex("MarcaId");
 
+                    b.HasIndex("MedidaId")
+                        .IsUnique();
+
                     b.ToTable("Productos");
-                });
-
-            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Medida", b =>
-                {
-                    b.HasOne("ab_accesorios_be.Infraestructure.Models.Entities.Producto", "Producto")
-                        .WithOne("Medidas")
-                        .HasForeignKey("ab_accesorios_be.Infraestructure.Models.Entities.Medida", "ProductoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Producto");
                 });
 
             modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Producto", b =>
@@ -143,12 +138,20 @@ namespace ab_accesorios_be.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ab_accesorios_be.Infraestructure.Models.Entities.Medida", "Medidas")
+                        .WithOne("Producto")
+                        .HasForeignKey("ab_accesorios_be.Infraestructure.Models.Entities.Producto", "MedidaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Marca");
+
+                    b.Navigation("Medidas");
                 });
 
-            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Producto", b =>
+            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Medida", b =>
                 {
-                    b.Navigation("Medidas");
+                    b.Navigation("Producto");
                 });
 #pragma warning restore 612, 618
         }
