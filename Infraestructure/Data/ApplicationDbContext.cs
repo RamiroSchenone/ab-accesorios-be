@@ -45,7 +45,7 @@ namespace ab_accesorios_be.Infraestructure.Data
 
                 entity.Property(e => e.Alto).IsRequired();
                 entity.Property(e => e.Ancho).IsRequired();
-                entity.Property(e => e.Profudidad).IsRequired();
+                entity.Property(e => e.Profundidad).IsRequired();
                 entity.Property(e => e.ProductoId).IsRequired();
             });
 

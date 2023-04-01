@@ -80,6 +80,28 @@ namespace ab_accesorios_be.Services
             }
         }
 
+        public async Task<List<ProductoDto>> Search(string c)
+        {
+            try
+            {
+                var productosByCriteria = _context.Productos.Include(x => x.Marca)
+                    .Include(x => x.Medidas)
+                    .Where(x => x.Nombre.Contains(c))
+                    .ToList();
+                var dtos = _mapper.Map<List<Producto>, List<ProductoDto>>(productosByCriteria);
+                return dtos;
+            }
+            catch (DbUpdateException ex)
+            {
+                var sb = new StringBuilder();
+                sb.AppendLine($"Message: {ex.Message}");
+                sb.AppendLine($"InnerException: {ex.InnerException.Message}");
+                sb.AppendLine($"StackTrace: {ex.StackTrace}");
+
+                throw new Exception(sb.ToString());
+            }
+        }
+
         public async Task<ProductoDto> Put(ProductoInput productoInput)
         {
             try
@@ -100,7 +122,7 @@ namespace ab_accesorios_be.Services
 
                     entity.Medidas.Ancho = productoInput.Medidas.Ancho;
                     entity.Medidas.Alto = productoInput.Medidas.Alto;
-                    entity.Medidas.Profudidad = productoInput.Medidas.Profudidad;
+                    entity.Medidas.Profundidad = productoInput.Medidas.Profundidad;
 
                     _context.Entry(entity).State = EntityState.Modified;
                     await _context.SaveChangesAsync();

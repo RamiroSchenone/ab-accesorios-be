@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ab_accesorios_be.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/productos")]
     [ApiController]
     public class ProductoController : ControllerBase
     {
@@ -21,6 +21,20 @@ namespace ab_accesorios_be.Controllers
             try
             {
                 var dtos = await this.appService.Get();
+                return Ok(dtos);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] string criteria)
+        {
+            try
+            {
+                var dtos = await this.appService.Search(criteria);
                 return Ok(dtos);
             }
             catch (Exception ex)

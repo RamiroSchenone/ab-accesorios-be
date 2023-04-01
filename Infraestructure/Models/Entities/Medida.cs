@@ -6,7 +6,7 @@ namespace ab_accesorios_be.Infraestructure.Models.Entities
     {
         public int Alto { get; set; }
         public int Ancho { get; set; }
-        public int Profudidad { get; set; }
+        public int Profundidad { get; set; }
         public long ProductoId { get; set; }
         public Producto? Producto { get; set; }
     }

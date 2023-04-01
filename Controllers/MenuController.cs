@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ab_accesorios_be.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/menues")]
     [ApiController]
-    public class MenuItemController : ControllerBase
+    public class MenuController : ControllerBase
     {
         protected readonly MenuAppService appService;
 
-        public MenuItemController(MenuAppService appService)
+        public MenuController(MenuAppService appService)
         {
             this.appService = appService;
         }
