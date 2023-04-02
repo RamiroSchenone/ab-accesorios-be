@@ -15,6 +15,9 @@ namespace ab_accesorios_be.Infraestructure.Models
             CreateMap<Medida, MedidaDto>().ReverseMap();
             CreateMap<Marca, MarcaDto>().ReverseMap();
             CreateMap<MenuItem, MenuItemDto>().ReverseMap();
+            CreateMap<Usuario, UsuarioDto>().ReverseMap();
+            CreateMap<Localidad, LocalidadDto>().ReverseMap();
+            CreateMap<Provincia, ProvinciaDto>().ReverseMap();
         }
     }
 }

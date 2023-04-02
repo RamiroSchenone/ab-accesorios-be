@@ -3,5 +3,7 @@
     public class EntityBase
     {
         public long Id { get; set; }
+        public DateTime? FechaCreacion { get; set; }
     }
 }
+

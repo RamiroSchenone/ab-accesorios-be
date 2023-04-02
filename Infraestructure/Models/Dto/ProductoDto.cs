@@ -13,7 +13,5 @@ namespace ab_accesorios_be.Infraestructure.Models.Dto
 
         public virtual MedidaDto? Medidas { get; set; }
         public virtual MarcaDto? Marca { get; set; }
-
-        public DateTime FechaCreacion { get; set; }
     }
 }

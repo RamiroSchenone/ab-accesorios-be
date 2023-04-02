@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ab_accesorios_be.Controllers
 {
-    [Route("api/marcas")]
+    [Route("api/usuarios")]
     [ApiController]
-    public class MarcaController : ControllerBase
+    public class UsuarioController : ControllerBase
     {
-        protected readonly MarcaAppService appService;
+        protected readonly UsuarioAppService appService;
 
-        public MarcaController(MarcaAppService appService)
+        public UsuarioController(UsuarioAppService appService)
         {
             this.appService = appService;
         }
@@ -34,12 +34,12 @@ namespace ab_accesorios_be.Controllers
         {
             try
             {
-                var Marca = await this.appService.Get(id);
-                if (Marca == null)
+                var Usuario = await this.appService.Get(id);
+                if (Usuario == null)
                 {
                     return NotFound();
                 }
-                return Ok(Marca);
+                return Ok(Usuario);
             }
             catch (Exception ex)
             {
@@ -48,12 +48,12 @@ namespace ab_accesorios_be.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] MarcaDto MarcaInput)
+        public async Task<IActionResult> Post([FromBody] UsuarioDto UsuarioInput)
         {
             try
             {
-                var MarcaUpdated = await this.appService.Post(MarcaInput);
-                return Ok(MarcaUpdated);
+                var UsuarioUpdated = await this.appService.Post(UsuarioInput);
+                return Ok(UsuarioUpdated);
             }
             catch (Exception ex)
             {
@@ -62,24 +62,24 @@ namespace ab_accesorios_be.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(long id, [FromBody] MarcaDto MarcaInput)
+        public async Task<IActionResult> Put(long id, [FromBody] UsuarioDto UsuarioInput)
         {
             try
             {
-                if (id != MarcaInput.Id)
+                if (id != UsuarioInput.Id)
                 {
                     return BadRequest();
                 }
 
-                var MarcaToUpdate = this.appService.Get(id).Result;
+                var UsuarioToUpdate = this.appService.Get(id).Result;
 
-                if (MarcaToUpdate == null)
+                if (UsuarioToUpdate == null)
                 {
                     return NotFound();
                 }
 
-                var MarcaUpdated = await this.appService.Put(MarcaInput);
-                return Ok(MarcaUpdated);
+                var UsuarioUpdated = await this.appService.Put(UsuarioInput);
+                return Ok(UsuarioUpdated);
             }
             catch (Exception ex)
             {
@@ -95,7 +95,7 @@ namespace ab_accesorios_be.Controllers
                 var deleted = await appService.Delete(id);
 
                 if (deleted)
-                    return Ok(new { message = "Marca eliminada con éxito." });
+                    return Ok(new { message = "Usuario eliminado con éxito." });
 
                 return BadRequest();
             }

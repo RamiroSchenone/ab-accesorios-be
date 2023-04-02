@@ -28,6 +28,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<ProductoAppService>();
 builder.Services.AddScoped<MarcaAppService>();
 builder.Services.AddScoped<MenuAppService>();
+builder.Services.AddScoped<UsuarioAppService>();
 
 builder.Services.AddCors(opt =>
 {

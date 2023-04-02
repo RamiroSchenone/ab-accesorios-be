@@ -9,6 +9,9 @@ namespace ab_accesorios_be.Infraestructure.Data
         public DbSet<Marca> Marcas { get; set; }
         public DbSet<Medida> Medidas { get; set; }
         public DbSet<MenuItem> Menus { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Localidad> Localidades { get; set; }
+        public DbSet<Provincia> Provincias { get; set; }
 
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
@@ -57,6 +60,33 @@ namespace ab_accesorios_be.Infraestructure.Data
                 entity.Property(e => e.Label).IsRequired();
                 entity.Property(e => e.RedirectTo).IsRequired();
                 entity.Property(e => e.Icon).IsRequired();
+            });
+
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Nombre).IsRequired();
+                entity.Property(e => e.Apellido).IsRequired();
+                entity.Property(e => e.NroDocumento).HasMaxLength(8);
+                entity.Property(e => e.Email).IsRequired();
+                entity.Property(e => e.LocalidadId).IsRequired();
+            });
+
+            modelBuilder.Entity<Localidad>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.CodigoPostal).IsRequired();
+                entity.Property(e => e.Descripcion).IsRequired();
+                entity.Property(e => e.ProvinciaId).IsRequired();
+            });
+
+            modelBuilder.Entity<Provincia>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Descripcion).IsRequired();
             });
         }
     }

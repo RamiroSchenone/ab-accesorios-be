@@ -16,8 +16,5 @@ namespace ab_accesorios_be.Infraestructure.Models.Entities
 
         public virtual Medida? Medidas { get; set; }
         public virtual Marca? Marca { get; set; }
-
-        public DateTime FechaCreacion { get; set; }
-
     }
 }
