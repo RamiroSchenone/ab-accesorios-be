@@ -39,6 +39,7 @@ namespace ab_accesorios_be.Services
         public async Task<MarcaDto> Post(MarcaDto MarcaInput)
         {
             var entity = _mapper.Map<MarcaDto, Marca>(MarcaInput);
+            entity.FechaCreacion = DateTime.Now;
 
             _context.Add(entity);
             await _context.SaveChangesAsync();

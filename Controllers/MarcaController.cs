@@ -1,4 +1,5 @@
 ﻿using ab_accesorios_be.Infraestructure.Models.Dto;
+using ab_accesorios_be.Infraestructure.Models.Entities;
 using ab_accesorios_be.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -53,7 +54,7 @@ namespace ab_accesorios_be.Controllers
             try
             {
                 var MarcaUpdated = await this.appService.Post(MarcaInput);
-                return Ok(MarcaUpdated);
+                return Ok(new { message = "Marca creada con éxito.", entity = MarcaUpdated });
             }
             catch (Exception ex)
             {
@@ -61,25 +62,20 @@ namespace ab_accesorios_be.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(long id, [FromBody] MarcaDto MarcaInput)
+        [HttpPost("update")]
+        public async Task<IActionResult> Put([FromBody] MarcaDto marcaInput)
         {
             try
             {
-                if (id != MarcaInput.Id)
-                {
-                    return BadRequest();
-                }
-
-                var MarcaToUpdate = this.appService.Get(id).Result;
+                var MarcaToUpdate = this.appService.Get(marcaInput.Id).Result;
 
                 if (MarcaToUpdate == null)
                 {
                     return NotFound();
                 }
 
-                var MarcaUpdated = await this.appService.Put(MarcaInput);
-                return Ok(MarcaUpdated);
+                var MarcaUpdated = await this.appService.Put(marcaInput);
+                return Ok(new { message = "Marca actualizada con éxito.", entity = MarcaUpdated });
             }
             catch (Exception ex)
             {

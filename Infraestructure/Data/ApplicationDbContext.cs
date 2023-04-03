@@ -68,7 +68,8 @@ namespace ab_accesorios_be.Infraestructure.Data
 
                 entity.Property(e => e.Nombre).IsRequired();
                 entity.Property(e => e.Apellido).IsRequired();
-                entity.Property(e => e.NroDocumento).HasMaxLength(8);
+                entity.Property(e => e.Username).IsRequired();
+                entity.Property(e => e.Telefono).IsRequired();
                 entity.Property(e => e.Email).IsRequired();
                 entity.Property(e => e.LocalidadId).IsRequired();
             });
