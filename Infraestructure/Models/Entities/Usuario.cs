@@ -6,10 +6,8 @@
         public string Apellido { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
-        public int Telefono { get; set; }
-        public string DireccionCalle { get; set; }
-        public string DireccionNumero { get; set; }
-        public long LocalidadId { get; set; }
-        public Localidad? Localidad { get; set; }
+        public string Telefono { get; set; }
+        public long UsuarioDomicilioId { get; set; }
+        public UsuarioDomicilio UsuarioDomicilio { get; set; }
     }
 }

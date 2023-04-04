@@ -10,9 +10,7 @@ namespace ab_accesorios_be.Infraestructure.Data
         public DbSet<Medida> Medidas { get; set; }
         public DbSet<MenuItem> Menus { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Localidad> Localidades { get; set; }
-        public DbSet<Provincia> Provincias { get; set; }
-
+        public DbSet<UsuarioDomicilio> UsuariosDomicilio { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -71,23 +69,20 @@ namespace ab_accesorios_be.Infraestructure.Data
                 entity.Property(e => e.Username).IsRequired();
                 entity.Property(e => e.Telefono).IsRequired();
                 entity.Property(e => e.Email).IsRequired();
-                entity.Property(e => e.LocalidadId).IsRequired();
+
+                entity.HasOne(d => d.UsuarioDomicilio).WithMany().HasForeignKey(d => d.UsuarioDomicilioId).OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<Localidad>(entity =>
+
+            modelBuilder.Entity<UsuarioDomicilio>(entity =>
             {
                 entity.HasKey(e => e.Id);
 
+                entity.Property(e => e.ProvinciaGeoRefId).IsRequired();
+                entity.Property(e => e.LocalidadGeoRefId).IsRequired();
+                entity.Property(e => e.DireccionCalle).IsRequired();
+                entity.Property(e => e.DireccionNumero).IsRequired();
                 entity.Property(e => e.CodigoPostal).IsRequired();
-                entity.Property(e => e.Descripcion).IsRequired();
-                entity.Property(e => e.ProvinciaId).IsRequired();
-            });
-
-            modelBuilder.Entity<Provincia>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-
-                entity.Property(e => e.Descripcion).IsRequired();
             });
         }
     }

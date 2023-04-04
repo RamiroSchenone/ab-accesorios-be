@@ -6,12 +6,10 @@ namespace ab_accesorios_be.Infraestructure.Models.Dto
     {
         public string Nombre { get; set; }
         public string Apellido { get; set; }
-        public string Username { get { return this.Nombre.ToLower().Substring(0, 1) + " " + this.Apellido.ToLower(); } }
+        public string Username { get; set; }
         public string Email { get; set; }
-        public int Telefono { get; set; }
-        public string DireccionCalle { get; set; }
-        public string DireccionNumero { get; set; }
-        public long LocalidadId { get; set; }
-        public LocalidadDto? Localidad { get; set; }
+        public string Telefono { get; set; }
+        public long UsuarioDomicilioId { get; set; }
+        public UsuarioDomicilioDto UsuarioDomicilio { get; set; }
     }
 }

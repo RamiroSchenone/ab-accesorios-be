@@ -11,8 +11,8 @@ using ab_accesorios_be.Infraestructure.Data;
 namespace ab_accesorios_be.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230402015900_reestructuracion-db-usuarios")]
-    partial class reestructuraciondbusuarios
+    [Migration("20230404023946_v1.0.0")]
+    partial class v100
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,32 +21,6 @@ namespace ab_accesorios_be.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Localidad", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("CodigoPostal")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("FechaCreacion")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<long>("ProvinciaId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProvinciaId");
-
-                    b.ToTable("Localidades");
-                });
 
             modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Marca", b =>
                 {
@@ -162,24 +136,6 @@ namespace ab_accesorios_be.Migrations
                     b.ToTable("Productos");
                 });
 
-            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Provincia", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("FechaCreacion")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Provincias");
-                });
-
             modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Usuario", b =>
                 {
                     b.Property<long>("Id")
@@ -197,33 +153,69 @@ namespace ab_accesorios_be.Migrations
                     b.Property<DateTime?>("FechaCreacion")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("LocalidadId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("NroDocumento")
-                        .HasMaxLength(8)
-                        .HasColumnType("int");
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<long>("UsuarioDomicilioId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LocalidadId");
+                    b.HasIndex("UsuarioDomicilioId");
 
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Localidad", b =>
+            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.UsuarioDomicilio", b =>
                 {
-                    b.HasOne("ab_accesorios_be.Infraestructure.Models.Entities.Provincia", "Provincia")
-                        .WithMany()
-                        .HasForeignKey("ProvinciaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
 
-                    b.Navigation("Provincia");
+                    b.Property<long?>("CodigoPostal")
+                        .IsRequired()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("DireccionCalle")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DireccionNumero")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("FechaCreacion")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("LocalidadGeoRefDescripcion")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<long>("LocalidadGeoRefId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ProvinciaGeoRefDescripcion")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<long>("ProvinciaGeoRefId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UsuarioId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UsuariosDomicilio");
                 });
 
             modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Medida", b =>
@@ -250,13 +242,13 @@ namespace ab_accesorios_be.Migrations
 
             modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Usuario", b =>
                 {
-                    b.HasOne("ab_accesorios_be.Infraestructure.Models.Entities.Localidad", "Localidad")
+                    b.HasOne("ab_accesorios_be.Infraestructure.Models.Entities.UsuarioDomicilio", "UsuarioDomicilio")
                         .WithMany()
-                        .HasForeignKey("LocalidadId")
+                        .HasForeignKey("UsuarioDomicilioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Localidad");
+                    b.Navigation("UsuarioDomicilio");
                 });
 
             modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Producto", b =>

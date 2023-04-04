@@ -18,7 +18,8 @@ namespace ab_accesorios_be.Services
 
         public async Task<List<UsuarioDto>> Get()
         {
-            var UsuariosList = await _context.Usuarios.ToListAsync();
+            var UsuariosList = await _context.Usuarios
+                .ToListAsync();
 
             var dtos = _mapper.Map<List<Usuario>, List<UsuarioDto>>(UsuariosList);
 
