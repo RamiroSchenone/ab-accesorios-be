@@ -54,28 +54,26 @@ namespace ab_accesorios_be.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "UsuariosDomicilio",
+                name: "Usuarios",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UsuarioId = table.Column<long>(type: "bigint", nullable: false),
-                    DireccionCalle = table.Column<string>(type: "longtext", nullable: false)
+                    Username = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DireccionNumero = table.Column<string>(type: "longtext", nullable: false)
+                    Nombre = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CodigoPostal = table.Column<long>(type: "bigint", nullable: false),
-                    LocalidadGeoRefId = table.Column<long>(type: "bigint", nullable: false),
-                    LocalidadGeoRefDescripcion = table.Column<string>(type: "longtext", nullable: false)
+                    Apellido = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProvinciaGeoRefId = table.Column<long>(type: "bigint", nullable: false),
-                    ProvinciaGeoRefDescripcion = table.Column<string>(type: "longtext", nullable: false)
+                    Email = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Telefono = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     FechaCreacion = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UsuariosDomicilio", x => x.Id);
+                    table.PrimaryKey("PK_Usuarios", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -109,31 +107,32 @@ namespace ab_accesorios_be.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Usuarios",
+                name: "UsuariosDomicilio",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nombre = table.Column<string>(type: "longtext", nullable: false)
+                    UsuarioId = table.Column<long>(type: "bigint", nullable: false),
+                    DireccionCalle = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Apellido = table.Column<string>(type: "longtext", nullable: false)
+                    DireccionNumero = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Username = table.Column<string>(type: "longtext", nullable: false)
+                    CodigoPostal = table.Column<long>(type: "bigint", nullable: false),
+                    LocalidadGeoRefId = table.Column<long>(type: "bigint", nullable: false),
+                    LocalidadGeoRefDescripcion = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "longtext", nullable: false)
+                    ProvinciaGeoRefId = table.Column<long>(type: "bigint", nullable: false),
+                    ProvinciaGeoRefDescripcion = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Telefono = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    UsuarioDomicilioId = table.Column<long>(type: "bigint", nullable: false),
                     FechaCreacion = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usuarios", x => x.Id);
+                    table.PrimaryKey("PK_UsuariosDomicilio", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Usuarios_UsuariosDomicilio_UsuarioDomicilioId",
-                        column: x => x.UsuarioDomicilioId,
-                        principalTable: "UsuariosDomicilio",
+                        name: "FK_UsuariosDomicilio_Usuarios_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -175,9 +174,10 @@ namespace ab_accesorios_be.Migrations
                 column: "MarcaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Usuarios_UsuarioDomicilioId",
-                table: "Usuarios",
-                column: "UsuarioDomicilioId");
+                name: "IX_UsuariosDomicilio_UsuarioId",
+                table: "UsuariosDomicilio",
+                column: "UsuarioId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -190,13 +190,13 @@ namespace ab_accesorios_be.Migrations
                 name: "Menus");
 
             migrationBuilder.DropTable(
-                name: "Usuarios");
+                name: "UsuariosDomicilio");
 
             migrationBuilder.DropTable(
                 name: "Productos");
 
             migrationBuilder.DropTable(
-                name: "UsuariosDomicilio");
+                name: "Usuarios");
 
             migrationBuilder.DropTable(
                 name: "Marcas");

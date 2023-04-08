@@ -53,7 +53,7 @@ namespace ab_accesorios_be.Controllers
             try
             {
                 var UsuarioUpdated = await this.appService.Post(UsuarioInput);
-                return Ok(UsuarioUpdated);
+                return Ok(new { message = "Usuario creado con éxito.", entity = UsuarioUpdated });
             }
             catch (Exception ex)
             {
@@ -61,25 +61,20 @@ namespace ab_accesorios_be.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(long id, [FromBody] UsuarioDto UsuarioInput)
+        [HttpPost("update")]
+        public async Task<IActionResult> Put([FromBody] UsuarioDto usuarioDto)
         {
             try
             {
-                if (id != UsuarioInput.Id)
-                {
-                    return BadRequest();
-                }
-
-                var UsuarioToUpdate = this.appService.Get(id).Result;
+                var UsuarioToUpdate = this.appService.Get(usuarioDto.Id).Result;
 
                 if (UsuarioToUpdate == null)
                 {
                     return NotFound();
                 }
 
-                var UsuarioUpdated = await this.appService.Put(UsuarioInput);
-                return Ok(UsuarioUpdated);
+                var UsuarioUpdated = await this.appService.Put(usuarioDto);
+                return Ok(new { message = "Usuario actualizado con éxito.", entity = UsuarioUpdated });
             }
             catch (Exception ex)
             {

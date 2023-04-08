@@ -162,12 +162,7 @@ namespace ab_accesorios_be.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<long>("UsuarioDomicilioId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioDomicilioId");
 
                     b.ToTable("Usuarios");
                 });
@@ -212,6 +207,9 @@ namespace ab_accesorios_be.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
+
                     b.ToTable("UsuariosDomicilio");
                 });
 
@@ -237,20 +235,26 @@ namespace ab_accesorios_be.Migrations
                     b.Navigation("Marca");
                 });
 
-            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Usuario", b =>
+            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.UsuarioDomicilio", b =>
                 {
-                    b.HasOne("ab_accesorios_be.Infraestructure.Models.Entities.UsuarioDomicilio", "UsuarioDomicilio")
-                        .WithMany()
-                        .HasForeignKey("UsuarioDomicilioId")
+                    b.HasOne("ab_accesorios_be.Infraestructure.Models.Entities.Usuario", "Usuario")
+                        .WithOne("UsuarioDomicilio")
+                        .HasForeignKey("ab_accesorios_be.Infraestructure.Models.Entities.UsuarioDomicilio", "UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UsuarioDomicilio");
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Producto", b =>
                 {
                     b.Navigation("Medidas");
+                });
+
+            modelBuilder.Entity("ab_accesorios_be.Infraestructure.Models.Entities.Usuario", b =>
+                {
+                    b.Navigation("UsuarioDomicilio")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -70,7 +70,7 @@ namespace ab_accesorios_be.Infraestructure.Data
                 entity.Property(e => e.Telefono).IsRequired();
                 entity.Property(e => e.Email).IsRequired();
 
-                entity.HasOne(d => d.UsuarioDomicilio).WithMany().HasForeignKey(d => d.UsuarioDomicilioId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(p => p.UsuarioDomicilio).WithOne(m => m.Usuario).HasForeignKey<UsuarioDomicilio>(m => m.UsuarioId).OnDelete(DeleteBehavior.Cascade);
             });
 
 
