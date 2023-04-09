@@ -1,4 +1,5 @@
-﻿using ab_accesorios_be.Infraestructure.Models.Inputs;
+﻿using ab_accesorios_be.Infraestructure.Models.Dto;
+using ab_accesorios_be.Infraestructure.Models.Inputs;
 using ab_accesorios_be.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,20 +30,6 @@ namespace ab_accesorios_be.Controllers
             }
         }
 
-        [HttpGet("search")]
-        public async Task<IActionResult> Search([FromQuery] string criteria)
-        {
-            try
-            {
-                var dtos = await this.appService.Search(criteria);
-                return Ok(dtos);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(long id)
         {
@@ -62,12 +49,12 @@ namespace ab_accesorios_be.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ProductoInput productoInput)
+        public async Task<IActionResult> Post([FromBody] ProductoInput producto)
         {
             try
             {
-                var productoUpdated = await this.appService.Post(productoInput);
-                return Ok(productoUpdated);
+                var productoUpdated = await this.appService.Post(producto);
+                return Ok(new { message = "Producto creado con éxito.", entity = productoUpdated });
             }
             catch (Exception ex)
             {
@@ -75,25 +62,34 @@ namespace ab_accesorios_be.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(long id, [FromBody] ProductoInput productoInput)
+        [HttpPost("update")]
+        public async Task<IActionResult> Put([FromBody] ProductoInput producto)
         {
             try
             {
-                if (id != productoInput.Id)
-                {
-                    return BadRequest();
-                }
-
-                var productoToUpdate = this.appService.Get(id).Result;
+                var productoToUpdate = this.appService.Get(producto.Id).Result;
 
                 if (productoToUpdate == null)
                 {
                     return NotFound();
                 }
 
-                var productoUpdated = await this.appService.Put(productoInput);
-                return Ok(productoUpdated);
+                var productoUpdated = await this.appService.Put(producto);
+                return Ok(new { message = "Producto actualizado con éxito.", entity = productoUpdated });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] string criteria)
+        {
+            try
+            {
+                var dtos = await this.appService.Search(criteria);
+                return Ok(dtos);
             }
             catch (Exception ex)
             {
@@ -111,7 +107,7 @@ namespace ab_accesorios_be.Controllers
                 if (deleted)
                     return Ok(new { message = "Producto eliminado con éxito." });
 
-                return BadRequest(new { error = "Se produjo un error al intentar eliminar el registro, compruebe el Id." });
+                return BadRequest();
             }
             catch (Exception ex)
             {
