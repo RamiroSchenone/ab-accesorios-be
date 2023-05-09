@@ -7,10 +7,11 @@ namespace ab_accesorios_be.Infraestructure.Data
     {
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Marca> Marcas { get; set; }
-        public DbSet<Medida> Medidas { get; set; }
+        public DbSet<MedidasProducto> Medidas { get; set; }
         public DbSet<MenuItem> Menus { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<UsuarioDomicilio> UsuariosDomicilio { get; set; }
+        public DbSet<Archivo> Archivos { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -20,6 +21,7 @@ namespace ab_accesorios_be.Infraestructure.Data
 
             modelBuilder.Entity<Producto>(entity =>
             {
+                entity.ToTable("ab_Productos");
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.MarcaId).IsRequired();
@@ -29,19 +31,21 @@ namespace ab_accesorios_be.Infraestructure.Data
                 entity.Property(e => e.Disponible).IsRequired();
                 entity.Property(e => e.ImageURL).IsRequired();
 
-                entity.HasOne(p => p.Medidas).WithOne(m => m.Producto).HasForeignKey<Medida>(m => m.ProductoId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(p => p.Medidas).WithOne(m => m.Producto).HasForeignKey<MedidasProducto>(m => m.ProductoId).OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne(d => d.Marca).WithMany().HasForeignKey(d => d.MarcaId).OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Marca>(entity =>
             {
+                entity.ToTable("ab_Marcas");
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Nombre).IsRequired();
             });
 
-            modelBuilder.Entity<Medida>(entity =>
+            modelBuilder.Entity<MedidasProducto>(entity =>
             {
+                entity.ToTable("ab_MedidasProducto");
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Alto).IsRequired();
@@ -52,6 +56,7 @@ namespace ab_accesorios_be.Infraestructure.Data
 
             modelBuilder.Entity<MenuItem>(entity =>
             {
+                entity.ToTable("ab_MenuItems");
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Nombre).IsRequired();
@@ -62,6 +67,7 @@ namespace ab_accesorios_be.Infraestructure.Data
 
             modelBuilder.Entity<Usuario>(entity =>
             {
+                entity.ToTable("ab_Usuarios");
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Nombre).IsRequired();
@@ -76,6 +82,7 @@ namespace ab_accesorios_be.Infraestructure.Data
 
             modelBuilder.Entity<UsuarioDomicilio>(entity =>
             {
+                entity.ToTable("ab_UsuariosDomicilio");
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.ProvinciaGeoRefId).IsRequired();
@@ -83,6 +90,19 @@ namespace ab_accesorios_be.Infraestructure.Data
                 entity.Property(e => e.DireccionCalle).IsRequired();
                 entity.Property(e => e.DireccionNumero).IsRequired();
                 entity.Property(e => e.CodigoPostal).IsRequired();
+            });
+
+            modelBuilder.Entity<Archivo>(entity =>
+            {
+                entity.ToTable("ab_Archivos");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.FilePath).IsRequired();
+                entity.Property(e => e.FileName).IsRequired();
+                entity.Property(e => e.Size).IsRequired();
+                entity.Property(e => e.DownloadName).IsRequired();
+                entity.Property(e => e.ContentType).IsRequired();
             });
         }
     }

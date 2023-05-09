@@ -29,6 +29,7 @@ builder.Services.AddScoped<ProductoAppService>();
 builder.Services.AddScoped<MarcaAppService>();
 builder.Services.AddScoped<MenuAppService>();
 builder.Services.AddScoped<UsuarioAppService>();
+builder.Services.AddScoped<ArchivoAppService>();
 
 builder.Services.AddCors(opt =>
 {

@@ -11,6 +11,6 @@ namespace ab_accesorios_be.Infraestructure.Models.Inputs
         public float Precio { get; set; }
 
         public long MarcaId { get; set; }
-        public MedidaInput Medidas { get; set; }
+        public MedidasProductoInput Medidas { get; set; }
     }
 }

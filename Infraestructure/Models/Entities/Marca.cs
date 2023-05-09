@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ab_accesorios_be.Infraestructure.Models.Entities
+﻿namespace ab_accesorios_be.Infraestructure.Models.Entities
 {
     public class Marca : EntityBase
     {

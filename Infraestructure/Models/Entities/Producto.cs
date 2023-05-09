@@ -14,7 +14,7 @@ namespace ab_accesorios_be.Infraestructure.Models.Entities
         [ForeignKey("Marca")]
         public long MarcaId { get; set; }
 
-        public virtual Medida? Medidas { get; set; }
+        public virtual MedidasProducto? Medidas { get; set; }
         public virtual Marca? Marca { get; set; }
     }
 }

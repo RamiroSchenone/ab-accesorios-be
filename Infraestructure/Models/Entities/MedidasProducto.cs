@@ -2,7 +2,7 @@
 
 namespace ab_accesorios_be.Infraestructure.Models.Entities
 {
-    public class Medida : EntityBase
+    public class MedidasProducto : EntityBase
     {
         public float Alto { get; set; }
         public float Ancho { get; set; }

@@ -1,6 +1,4 @@
-﻿using ab_accesorios_be.Infraestructure.Models.Entities;
-
-namespace ab_accesorios_be.Infraestructure.Models.Dto
+﻿namespace ab_accesorios_be.Infraestructure.Models.Dto
 {
     public class ProductoDto : DtoBase
     {
@@ -11,7 +9,7 @@ namespace ab_accesorios_be.Infraestructure.Models.Dto
         public float Precio { get; set; }
         public long MarcaId { get; set; }
 
-        public virtual MedidaDto? Medidas { get; set; }
+        public virtual MedidasProductoDto? Medidas { get; set; }
         public virtual MarcaDto? Marca { get; set; }
     }
 }
